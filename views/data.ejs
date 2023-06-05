@@ -75,9 +75,20 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <label class="form-label">Visualization ID</label>
                         <input type="number" name="visualizationId" id="visualizationId" class="form-control" />
+                    </div> -->
+                    <div class="mb-3">
+                        <label class="form-label">Visualization ID</label>
+                        <select name="visualizationId" id="visualizationId" class="form-control">
+                            <option value= name="select"></option>
+                            <% viewNames.forEach(function(viewName) { %>
+                                <option value="<%= viewName %>">
+                                    <%= viewName %>
+                                </option>
+                                <% }); %>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Columns</label>

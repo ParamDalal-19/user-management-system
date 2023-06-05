@@ -2,7 +2,7 @@ const mysql = require("mysql");
 
 var connection = mysql.createConnection({
   host: "localhost",
-  database: "finalvizmap",
+  database: "node_app",
   user: "root",
   password: "",
 });
