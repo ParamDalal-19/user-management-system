@@ -2,20 +2,15 @@ var express = require("express");
 var router = express.Router();
 var database = require("../database");
 
-router.get("/", function (request, response, next) {
-  const query = 'SHOW FULL TABLES WHERE Table_type = "VIEW"';
-  database.query(query, (err, results) => {
-    if (err) throw err;
-    const viewNames = results.map((row) => row[Object.keys(row)[0]]);
-    response.render("data", { title: "Visualization Mapping", viewNames });
-  });
+router.get("/", function (request, response, next){
+  response.render("data", { title: "User Management System" });
 });
 
 router.post("/action", function (request, response, next) {
   var action = request.body.action;
 
   if (action == "fetch") {
-    var query = "SELECT * FROM visualization_mapping";
+    var query = "SELECT * FROM user_management";
     database.query(query, function (error, data) {
       response.json({
         data: data,
@@ -24,15 +19,15 @@ router.post("/action", function (request, response, next) {
   }
 
   if (action == "Add") {
-    var visualizationId = request.body.visualizationId;
-    var columns = request.body.columns;
-    var sequenceNumber = request.body.sequenceNumber;
+    var firstName = request.body.firstName;
+    var lastName = request.body.lastName;
+    var email = request.body.email;
     var isActive = request.body.isActive;
 
     var query = `
-		INSERT INTO visualization_mapping 
-		(visualizationId, columns, sequenceNumber, isActive) 
-		VALUES ("${visualizationId}", "${columns}", "${sequenceNumber}", "${isActive}")
+		INSERT INTO user_management 
+		(firstName, lastName, email, isActive) 
+		VALUES ("${firstName}", "${lastName}", "${email}", "${isActive}")
 		`;
 
     database.query(query, function (error, data) {
@@ -45,7 +40,7 @@ router.post("/action", function (request, response, next) {
   if (action == "fetch_single") {
     var id = request.body.id;
 
-    var query = `SELECT * FROM visualization_mapping WHERE id = "${id}"`;
+    var query = `SELECT * FROM user_management WHERE id = "${id}"`;
 
     database.query(query, function (error, data) {
       response.json(data[0]);
@@ -54,16 +49,16 @@ router.post("/action", function (request, response, next) {
 
   if (action == "Edit") {
     var id = request.body.id;
-    var visualizationId = request.body.visualizationId;
-    var columns = request.body.columns;
-    var sequenceNumber = request.body.sequenceNumber;
+    var firstName = request.body.firstName;
+    var lastName = request.body.lastName;
+    var email = request.body.email;
     var isActive = request.body.isActive;
 
     var query = `
-		UPDATE visualization_mapping 
-		SET visualizationId = "${visualizationId}", 
-		columns = "${columns}", 
-		sequenceNumber = "${sequenceNumber}", 
+		UPDATE user_management 
+		SET firstName = "${firstName}", 
+		lastName = "${lastName}", 
+		email = "${email}", 
 		isActive = "${isActive}" 
 		WHERE id = "${id}"
 		`;
@@ -78,7 +73,7 @@ router.post("/action", function (request, response, next) {
   if (action == "delete") {
     var id = request.body.id;
 
-    var query = `DELETE FROM visualization_mapping WHERE id = "${id}"`;
+    var query = `DELETE FROM user_management WHERE id = "${id}"`;
 
     database.query(query, function (error, data) {
       response.json({
@@ -108,7 +103,7 @@ module.exports = router;
 //   var action = request.body.action;
 
 //   if (action == "fetch") {
-//     var query = "SELECT * FROM visualization_mapping";
+//     var query = "SELECT * FROM user_management";
 //     database.query(query, function (error, data) {
 //       response.json({
 //         data: data,
@@ -117,15 +112,15 @@ module.exports = router;
 //   }
 
 //   if (action == "Add") {
-//     var visualizationId = request.body.visualizationId;
-//     var columns = request.body.columns;
-//     var sequenceNumber = request.body.sequenceNumber;
+//     var firstName = request.body.firstName;
+//     var lastName = request.body.lastName;
+//     var email = request.body.email;
 //     var isActive = request.body.isActive;
 
 //     var query = `
-// 		INSERT INTO visualization_mapping
-// 		(visualizationId, columns, sequenceNumber, isActive)
-// 		VALUES ("${visualizationId}", "${columns}", "${sequenceNumber}", "${isActive}")
+// 		INSERT INTO user_management
+// 		(firstName, lastName, email, isActive)
+// 		VALUES ("${firstName}", "${lastName}", "${email}", "${isActive}")
 // 		`;
 
 //     database.query(query, function (error, data) {
@@ -138,7 +133,7 @@ module.exports = router;
 //   if (action == "fetch_single") {
 //     var id = request.body.id;
 
-//     var query = `SELECT * FROM visualization_mapping WHERE id = "${id}"`;
+//     var query = `SELECT * FROM user_management WHERE id = "${id}"`;
 
 //     database.query(query, function (error, data) {
 //       response.json(data[0]);
@@ -147,16 +142,16 @@ module.exports = router;
 
 //   if (action == "Edit") {
 //     var id = request.body.id;
-//     var visualizationId = request.body.visualizationId;
-//     var columns = request.body.columns;
-//     var sequenceNumber = request.body.sequenceNumber;
+//     var firstName = request.body.firstName;
+//     var lastName = request.body.lastName;
+//     var email = request.body.email;
 //     var isActive = request.body.isActive;
 
 //     var query = `
-// 		UPDATE visualization_mapping
-// 		SET visualizationId = "${visualizationId}",
-// 		columns = "${columns}",
-// 		sequenceNumber = "${sequenceNumber}",
+// 		UPDATE user_management
+// 		SET firstName = "${firstName}",
+// 		lastName = "${lastName}",
+// 		email = "${email}",
 // 		isActive = "${isActive}"
 // 		WHERE id = "${id}"
 // 		`;
@@ -171,7 +166,7 @@ module.exports = router;
 //   if (action == "delete") {
 //     var id = request.body.id;
 
-//     var query = `DELETE FROM visualization_mapping WHERE id = "${id}"`;
+//     var query = `DELETE FROM user_management WHERE id = "${id}"`;
 
 //     database.query(query, function (error, data) {
 //       response.json({
